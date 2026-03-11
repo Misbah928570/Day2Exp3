@@ -1,17 +1,31 @@
 plugins {
     id 'application'
+    id 'java'
 }
 
+jar{
+    manifest{
+        attributes(
+                'Main-Class': 'org.example.Main'
+        )
+    }
+}
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    // Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation("org.seleniumhq.selenium:selenium-java:4.40.0")
+    // Source: https://mvnrepository.com/artifact/org.testng/testng
+    testImplementation("org.testng:testng:7.11.0")
 }
 
 application {
     mainClass = 'org.example.Main'
+}
+test{
+    useTestNG()
 }
 
 tasks.register('prepareDocs', Copy) {
@@ -19,7 +33,7 @@ tasks.register('prepareDocs', Copy) {
     group = 'documentation'
 
     from('src/main/resources') {
-        include '*/.html', '*/.css', '*/.js', '*/.png', '*/.jpg', '*/.jpeg', '*/.gif', '*/.svg'
+        include '**/*.html', '**/*.css', '**/*.js', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'
     }
     into("$rootDir/docs")
 }
